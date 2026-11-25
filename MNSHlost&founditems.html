@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lost & Found | Student Portal</title>
+
+<style>
+:root{
+--deep:#435b43;
+--green:#829b70;
+--sage:#a9bd91;
+--pale:#eef2e7;
+--cream:#f8f8f1;
+--ink:#354235;
+--muted:#71806d;
+--line:#dce4d3;
+}
+
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:var(--cream);
+color:var(--ink);
+line-height:1.5;
+min-height:100vh;
+display:flex;
+flex-direction:column;
+}
+
+header{
+background:var(--deep);
+color:white;
+padding:17px 6%;
+display:flex;
+justify-content:space-between;
+gap:12px;
+flex-wrap:wrap;
+}
+
+.brand{font-size:1.2rem;font-weight:800}
+.brand span{color:#d7e4c6}
+
+main{
+width:min(1000px,92%);
+margin:30px auto 35px;
+flex:1;
+}
+
+.screen{display:none}
+.screen.active{display:block}
+
+.welcome,.card{
+background:white;
+border:1px solid var(--line);
+border-radius:18px;
+padding:25px;
+margin:18px 0;
+box-shadow:0 10px 26px #435b4310;
+}
+
+.welcome{
+text-align:center;
+padding:45px 20px;
+background:linear-gradient(135deg,#e8efdd,#fff);
+}
+
+h1,h2,h3{color:var(--deep)}
+h1{font-size:clamp(1.8rem,5vw,2.7rem);margin:0}
+h2{margin-top:0}
+p{color:var(--muted)}
+
+button{
+border:0;
+border-radius:9px;
+padding:12px 17px;
+background:var(--green);
+color:white;
+font-weight:bold;
+cursor:pointer;
+font-size:.95rem;
+}
+
+button:hover{filter:brightness(.94)}
+button.secondary{background:#e8eddf;color:var(--deep)}
+button.danger{background:#a94442}
+
+.actions{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-top:18px;
+}
+
+.center{justify-content:center}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:15px;
+margin-top:18px;
+}
+
+.choice{
+text-align:left;
+background:white;
+color:var(--deep);
+border:1px solid var(--line);
+padding:22px;
+border-radius:14px;
+}
+
+.choice strong,.choice span{display:block}
+.choice span{
+font-weight:normal;
+color:var(--muted);
+margin-top:5px;
+}
+
+form{display:grid;gap:13px}
+
+label{
+display:grid;
+gap:6px;
+color:var(--deep);
+font-weight:bold;
+}
+
+input,select,textarea{
+width:100%;
+padding:12px;
+border:1px solid var(--line);
+border-radius:8px;
+font:inherit;
+}
+
+textarea{min-height:90px}
+
+.notice{
+padding:13px;
+background:var(--pale);
+border-left:4px solid var(--green);
+border-radius:7px;
+color:var(--deep);
+}
+
+.topline{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:12px;
+flex-wrap:wrap;
+}
+
+.item{
+border:1px solid var(--line);
+border-radius:12px;
+padding:15px;
+background:white;
+overflow-wrap:anywhere;
+}
+
+.item h3{margin:7px 0}
+.item p{margin:5px 0}
+
+.status{
+display:inline-block;
+background:var(--pale);
+color:var(--deep);
+border-radius:20px;
+padding:3px 9px;
+font-size:.8rem;
+font-weight:bold;
+}
+
+.empty{
+padding:22px;
+text-align:center;
+border:1px dashed var(--sage);
+border-radius:10px;
+color:var(--muted);
+grid-column:1/-1;
+}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+gap:12px;
+margin-top:18px;
+}
+
+.stat{
+background:var(--pale);
+padding:17px;
+border-radius:12px;
+text-align:center;
+}
+
+.stat strong{
+display:block;
+font-size:1.6rem;
+color:var(--deep);
+}
+
+footer{
+background:#006b45;
+color:white;
+text-align:center;
+padding:24px 16px;
+margin-top:auto;
+}
+
+footer .school{font-size:1.12rem;font-weight:bold;margin-bottom:5px}
+footer .portal{font-size:1.05rem;margin-bottom:8px}
+footer p{color:#fff;margin:5px 0}
+
+@media(max-width:600px){
+.card{padding:18px}
+.welcome{padding:32px 17px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="brand">LOST <span>&</span> FOUND</div>
+<div>Student Lost Item Assistance Portal</div>
+</header>
+
+<main>
+
+<!-- HOME -->
+<section id="home" class="screen active">
+<div class="welcome">
+<h1>Lost something? Found something?</h1>
+<p>Report lost belongings and help return items to their owners.</p>
+
+<div class="actions center">
+<button onclick="go('login')">Student Log In</button>
+<button class="secondary" onclick="go('register')">Create Account</button>
+<button class="secondary" onclick="go('adminLogin')">Admin Login</button>
+</div>
+</div>
+</section>
+
+<!-- STUDENT LOGIN -->
+<section id="login" class="screen">
+<div class="card">
+<h2>Student Log In</h2>
+
+<form onsubmit="event.preventDefault();loginUser()">
+<label>Email Address
+<input id="loginEmail" type="email" required>
+</label>
+
+<label>Password
+<input id="loginPassword" type="password" required>
+</label>
+
+<button type="submit">Log In</button>
+</form>
+
+<p id="loginMessage" role="alert"></p>
+<button class="secondary" onclick="go('home')">Back</button>
+
+<p>Don't have an account?
+<a href="#" onclick="go('register');return false">Register here</a>.
+</p>
+</div>
+</section>
+
+<!-- STUDENT REGISTER -->
+<section id="register" class="screen">
+<div class="card">
+<h2>Create Student Account</h2>
+
+<form onsubmit="event.preventDefault();registerUser()">
+
+<label>Full Name
+<input id="regName" type="text" required>
+</label>
+
+<label>Email Address
+<input id="regEmail" type="email" required>
+</label>
+
+<label>Password
+<input id="regPassword" type="password" minlength="6" required>
+</label>
+
+<label>Confirm Password
+<input id="regConfirmPassword" type="password" minlength="6" required>
+</label>
+
+<button type="submit">Register</button>
+</form>
+
+<p id="registerMessage" role="alert"></p>
+<button class="secondary" onclick="go('login')">Back to Log In</button>
+</div>
+</section>
+
+<!-- STUDENT DASHBOARD -->
+<section id="dashboard" class="screen">
+
+<div class="topline">
+<div>
+<h1>User Dashboard</h1>
+<p>Welcome, <span id="welcomeName">Student</span>!</p>
+</div>
+<button class="secondary" onclick="logoutUser()">Log Out</button>
+</div>
+
+<div class="grid">
+
+<button class="choice" onclick="go('reportChoice')">
+<strong>＋ Report an Item</strong>
+<span>Submit a lost or found item report.</span>
+</button>
+
+<button class="choice" onclick="go('browse')">
+<strong>⌕ Browse / Search Items</strong>
+<span>Search and filter verified reports.</span>
+</button>
+
+</div>
+</section>
+
+<!-- REPORT CHOICE -->
+<section id="reportChoice" class="screen">
+<div class="card">
+<h2>Choose Report Type</h2>
+
+<div class="grid">
+<button class="choice" onclick="openReport('Lost')">
+<strong>Lost Item</strong>
+<span>I lost something.</span>
+</button>
+
+<button class="choice" onclick="openReport('Found')">
+<strong>Found Item</strong>
+<span>I found something.</span>
+</button>
+</div>
+
+<button class="secondary" onclick="go('dashboard')">Back</button>
+</div>
+</section>
+
+<!-- REPORT FORM -->
+<section id="reportForm" class="screen">
+<div class="card">
+<h2 id="reportTitle">Report Item</h2>
+
+<form id="reportFormEl" onsubmit="event.preventDefault();submitReport()">
+
+<label>Item Name
+<input id="itemName" required>
+</label>
+
+<label>Category
+<select id="category" required>
+<option value="">Choose category</option>
+<option>School supplies</option>
+<option>Electronics</option>
+<option>Clothing / Accessories</option>
+<option>Wallet / ID</option>
+<option>Others</option>
+</select>
+</label>
+
+<label>Description
+<textarea id="description" required></textarea>
+</label>
+
+<label>Where was it lost or found?
+<input id="place" required>
+</label>
+
+<label>Date
+<input id="date" type="date" required>
+</label>
+
+<label>Contact Information
+<input id="contact" type="email" required>
+</label>
+
+<div class="actions">
+<button type="submit">Submit Report</button>
+<button type="button" class="secondary" onclick="go('reportChoice')">Cancel</button>
+</div>
+
+</form>
+</div>
+</section>
+
+<!-- REPORT PENDING -->
+<section id="pending" class="screen">
+<div class="card">
+<h2>Report Submitted!</h2>
+<p class="notice">
+Your report has been sent to the admin for verification.
+It will appear in the item list after approval.
+</p>
+<button onclick="go('dashboard')">Return to Dashboard</button>
+</div>
+</section>
+
+<!-- BROWSE -->
+<section id="browse" class="screen">
+<div class="topline">
+<div>
+<h1>Browse / Search Items</h1>
+<p>View verified lost and found reports.</p>
+</div>
+<button class="secondary" onclick="go('dashboard')">Dashboard</button>
+</div>
+
+<div class="card">
+<div class="grid">
+
+<label>Search
+<input id="search" oninput="renderItems()" placeholder="Search item">
+</label>
+
+<label>Type
+<select id="filterType" onchange="renderItems()">
+<option>All</option>
+<option>Lost</option>
+<option>Found</option>
+</select>
+</label>
+
+<label>Category
+<select id="filterCategory" onchange="renderItems()">
+<option>All</option>
+<option>School supplies</option>
+<option>Electronics</option>
+<option>Clothing / Accessories</option>
+<option>Wallet / ID</option>
+<option>Others</option>
+</select>
+</label>
+
+</div>
+
+<div id="items" class="grid"></div>
+</div>
+</section>
+
+<!-- POSSIBLE MATCH -->
+<section id="match" class="screen">
+<div class="card">
+<h2>Possible Item Match</h2>
+<p id="matchText"></p>
+
+<p class="notice">
+If this is your item, submit a claim and proof of ownership.
+</p>
+
+<div class="actions">
+<button onclick="go('claim')">Yes — Claim / Contact</button>
+<button class="secondary" onclick="go('browse')">No — Wait for Updates</button>
+</div>
+</div>
+</section>
+
+<!-- CLAIM FORM -->
+<section id="claim" class="screen">
+<div class="card">
+<h2>Submit Claim + Proof of Ownership</h2>
+
+<form onsubmit="event.preventDefault();submitClaim()">
+
+<label>Item Being Claimed
+<input id="claimItem" required>
+</label>
+
+<label>Your Name
+<input id="claimName" required>
+</label>
+
+<label>Proof of Ownership
+<textarea id="proof" required></textarea>
+</label>
+
+<label>Contact Information
+<input id="claimContact" type="email" required>
+</label>
+
+<button type="submit">Submit Claim</button>
+<button type="button" class="secondary" onclick="go('browse')">Cancel</button>
+
+</form>
+</div>
+</section>
+
+<!-- CLAIM PENDING -->
+<section id="claimPending" class="screen">
+<div class="card">
+<h2>Claim Submitted!</h2>
+<p class="notice">
+Your claim and proof of ownership have been sent to the admin for review.
+</p>
+<button onclick="go('dashboard')">Return to Dashboard</button>
+</div>
+</section>
+
+<!-- ADMIN LOGIN -->
+<section id="adminLogin" class="screen">
+<div class="card">
+<h2>Admin Login</h2>
+<p>Authorized personnel only.</p>
+
+<form onsubmit="event.preventDefault();adminLoginUser()">
+
+<label>Admin Email
+<input id="adminEmail" type="email" required>
+</label>
+
+<label>Admin Password
+<input id="adminPassword" type="password" required>
+</label>
+
+<button type="submit">Log In as Admin</button>
+
+</form>
+
+<p id="adminMessage" role="alert"></p>
+<button class="secondary" onclick="go('home')">Back to Home</button>
+</div>
+</section>
+
+<!-- ADMIN DASHBOARD -->
+<section id="adminDashboard" class="screen">
+
+<div class="topline">
+<div>
+<h1>Admin Dashboard</h1>
+<p>Welcome, Administrator!</p>
+</div>
+
+<button class="secondary" onclick="adminLogout()">Log Out</button>
+</div>
+
+<div class="stats">
+<div class="stat">
+<strong id="totalReports">0</strong>
+Reports
+</div>
+
+<div class="stat">
+<strong id="pendingCount">0</strong>
+Pending
+</div>
+
+<div class="stat">
+<strong id="approvedCount">0</strong>
+Approved
+</div>
+
+<div class="stat">
+<strong id="claimsCount">0</strong>
+Claims
+</div>
+</div>
+
+<div class="card">
+<div class="topline">
+<h2>Pending Item Reports</h2>
+<button onclick="renderAdmin()">Refresh</button>
+</div>
+<div id="adminReports" class="grid"></div>
+</div>
+
+<div class="card">
+<h2>Approved / Rejected Reports</h2>
+<div id="processedReports" class="grid"></div>
+</div>
+
+<div class="card">
+<h2>Student Claims</h2>
+<div id="adminClaims" class="grid"></div>
+</div>
+
+<div class="card">
+<h2>Processed Claims</h2>
+<div id="processedClaims" class="grid"></div>
+</div>
+
+</section>
+
+</main>
+
+<footer>
+<div class="school">Minuyan National High School</div>
+<div class="portal">Lost & Found Student Portal</div>
+<p>Designed to help students report, search, and recover their lost belongings.</p>
+<p>© 2026 Lost & Found. All Rights Reserved.</p>
+</footer>
+
+<script>
+
+// DATABASE
+const DB='lostFoundSharedData_v1';
+const USERS='lostFoundAccounts_v1';
+
+let typeNow='Lost';
+let selected=null;
+let currentUser=null;
+let isAdmin=false;
+
+// DEMO ADMIN CREDENTIALS
+const ADMIN_EMAIL='admin@mnhs.com';
+const ADMIN_PASSWORD='MNHSAdmin123';
+
+// DATABASE FUNCTIONS
+function loadDB(){
+try{
+return JSON.parse(localStorage.getItem(DB))||{
+reports:[],claims:[],activities:[]
+};
+}catch(e){
+return {reports:[],claims:[],activities:[]};
+}
+}
+
+function saveDB(data){
+localStorage.setItem(DB,JSON.stringify(data));
+}
+
+function loadUsers(){
+try{
+return JSON.parse(localStorage.getItem(USERS))||[];
+}catch(e){
+return [];
+}
+}
+
+function saveUsers(users){
+localStorage.setItem(USERS,JSON.stringify(users));
+}
+
+function logActivity(message,type){
+const d=loadDB();
+
+d.activities.unshift({
+id:Date.now()+Math.random(),
+message,
+type,
+time:new Date().toISOString()
+});
+
+d.activities=d.activities.slice(0,500);
+saveDB(d);
+}
+
+// NAVIGATION
+function go(id){
+
+if(id==='adminDashboard'&&!isAdmin){
+go('adminLogin');
+return;
+}
+
+if(id==='dashboard'&&!currentUser){
+go('login');
+return;
+}
+
+document.querySelectorAll('.screen').forEach(x=>{
+x.classList.remove('active');
+});
+
+document.getElementById(id).classList.add('active');
+
+window.scrollTo(0,0);
+
+if(id==='browse')renderItems();
+if(id==='adminDashboard')renderAdmin();
+}
+
+// EMAIL VALIDATION
+function emailInputValid(email){
+return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+// STUDENT REGISTRATION
+function registerUser(){
+
+const name=document.getElementById('regName').value.trim();
+const email=document.getElementById('regEmail').value.trim().toLowerCase();
+const password=document.getElementById('regPassword').value;
+const confirm=document.getElementById('regConfirmPassword').value;
+const message=document.getElementById('registerMessage');
+
+if(!emailInputValid(email)){
+message.textContent='Please enter a valid email address.';
+return;
+}
+
+if(password.length<6){
+message.textContent='Password must be at least 6 characters.';
+return;
+}
+
+if(password!==confirm){
+message.textContent='Passwords do not match.';
+return;
+}
+
+const users=loadUsers();
+
+if(users.some(u=>u.email===email)){
+message.textContent='This email is already registered.';
+return;
+}
+
+users.push({name,email,password});
+saveUsers(users);
+
+logActivity('New account registered: '+email,'Registration');
+
+document.getElementById('register').querySelector('form').reset();
+
+document.getElementById('loginMessage').textContent=
+'Account created. Please log in.';
+
+go('login');
+}
+
+// STUDENT LOGIN
+function loginUser(){
+
+const email=document.getElementById('loginEmail').value.trim().toLowerCase();
+const password=document.getElementById('loginPassword').value;
+
+const user=loadUsers().find(u=>
+u.email===email&&u.password===password
+);
+
+const message=document.getElementById('loginMessage');
+
+if(!emailInputValid(email)){
+message.textContent='Please enter a valid email address.';
+return;
+}
+
+if(!user){
+message.textContent='Incorrect email or password.';
+return;
+}
+
+currentUser=user;
+
+document.getElementById('welcomeName').textContent=user.name;
+document.getElementById('login').querySelector('form').reset();
+
+message.textContent='';
+
+logActivity('User logged in: '+email,'Login');
+
+go('dashboard');
+}
+
+// STUDENT LOGOUT
+function logoutUser(){
+
+if(currentUser){
+logActivity('User logged out: '+currentUser.email,'Logout');
+}
+
+currentUser=null;
+go('home');
+}
+
+// OPEN REPORT
+function openReport(t){
+
+if(!currentUser){
+go('login');
+return;
+}
+
+typeNow=t;
+
+document.getElementById('reportTitle').textContent=t+' Item Report';
+
+go('reportForm');
+}
+
+// SUBMIT REPORT
+function submitReport(){
+
+if(!currentUser){
+go('login');
+return;
+}
+
+const d=loadDB();
+
+const r={
+id:Date.now(),
+type:typeNow,
+name:document.getElementById('itemName').value.trim(),
+category:document.getElementById('category').value,
+description:document.getElementById('description').value.trim(),
+place:document.getElementById('place').value.trim(),
+date:document.getElementById('date').value,
+contact:document.getElementById('contact').value.trim(),
+status:'Pending admin verification',
+createdAt:new Date().toISOString(),
+submittedBy:currentUser.email
+};
+
+d.reports.unshift(r);
+
+d.activities.unshift({
+id:Date.now()+1,
+message:typeNow+' item report submitted: '+r.name,
+type:'Report',
+time:new Date().toISOString()
+});
+
+saveDB(d);
+
+document.getElementById('reportFormEl').reset();
+
+go('pending');
+}
+
+// BROWSE APPROVED ITEMS
+function renderItems(){
+
+const d=loadDB();
+
+const q=document.getElementById('search').value.toLowerCase();
+const t=document.getElementById('filterType').value;
+const c=document.getElementById('filterCategory').value;
+
+const a=d.reports.filter(r=>
+r.status==='Posted'&&
+(t==='All'||r.type===t)&&
+(c==='All'||r.category===c)&&
+(r.name+' '+r.description+' '+r.place).toLowerCase().includes(q)
+);
+
+document.getElementById('items').innerHTML=a.length
+?a.map(r=>`
+<article class="item">
+<span class="status">${safe(r.type)} · Verified</span>
+<h3>${safe(r.name)}</h3>
+<p>${safe(r.category)} — ${safe(r.description)}</p>
+<p>${safe(r.place)} · ${safe(r.date)}</p>
+<button onclick="choose(${r.id})">This may be my item</button>
+</article>
+`).join('')
+:'<div class="empty">No matching posted items. Try another search.</div>';
+}
+
+// POSSIBLE MATCH
+function choose(id){
+
+if(!currentUser){
+go('login');
+return;
+}
+
+const d=loadDB();
+
+selected=d.reports.find(r=>r.id===id);
+
+if(!selected)return;
+
+document.getElementById('matchText').textContent=
+selected.type+' item: '+selected.name+' — '+selected.description;
+
+document.getElementById('claimItem').value=selected.name;
+
+go('match');
+
+logActivity('Student viewed a possible match for: '+selected.name,'Match');
+}
+
+// SUBMIT CLAIM
+function submitClaim(){
+
+if(!currentUser){
+go('login');
+return;
+}
+
+const d=loadDB();
+
+const c={
+id:Date.now(),
+item:document.getElementById('claimItem').value.trim(),
+name:document.getElementById('claimName').value.trim(),
+proof:document.getElementById('proof').value.trim(),
+contact:document.getElementById('claimContact').value.trim(),
+status:'Pending admin review',
+createdAt:new Date().toISOString(),
+submittedBy:currentUser.email
+};
+
+d.claims.unshift(c);
+
+d.activities.unshift({
+id:Date.now()+1,
+message:'Claim submitted for '+c.item+' by '+c.name,
+type:'Claim',
+time:new Date().toISOString()
+});
+
+saveDB(d);
+
+document.querySelector('#claim form').reset();
+
+go('claimPending');
+}
+
+// ADMIN LOGIN
+function adminLoginUser(){
+
+const email=document.getElementById('adminEmail').value.trim().toLowerCase();
+const password=document.getElementById('adminPassword').value;
+
+const message=document.getElementById('adminMessage');
+
+if(email===ADMIN_EMAIL&&password===ADMIN_PASSWORD){
+
+isAdmin=true;
+
+document.querySelector('#adminLogin form').reset();
+
+message.textContent='';
+
+logActivity('Administrator logged in','Admin Login');
+
+go('adminDashboard');
+
+}else{
+message.textContent='Incorrect admin email or password.';
+}
+}
+
+// ADMIN LOGOUT
+function adminLogout(){
+
+isAdmin=false;
+
+logActivity('Administrator logged out','Admin Logout');
+
+go('home');
+}
+
+// ADMIN DASHBOARD
+function renderAdmin(){
+
+if(!isAdmin)return;
+
+const d=loadDB();
+
+const pendingReports=d.reports.filter(r=>
+r.status==='Pending admin verification'
+);
+
+const processedReports=d.reports.filter(r=>
+r.status==='Posted'||r.status==='Rejected'
+);
+
+const pendingClaims=d.claims.filter(c=>
+c.status==='Pending admin review'
+);
+
+const processedClaims=d.claims.filter(c=>
+c.status==='Approved'||c.status==='Rejected'
+);
+
+// STATISTICS
+document.getElementById('totalReports').textContent=d.reports.length;
+
+document.getElementById('pendingCount').textContent=
+pendingReports.length;
+
+document.getElementById('approvedCount').textContent=
+d.reports.filter(r=>r.status==='Posted').length;
+
+document.getElementById('claimsCount').textContent=d.claims.length;
+
+// PENDING REPORTS
+document.getElementById('adminReports').innerHTML=
+pendingReports.length
+?pendingReports.map(r=>`
+<article class="item">
+
+<span class="status">Pending Approval</span>
+
+<h3>${safe(r.type)}: ${safe(r.name)}</h3>
+
+<p>Category: ${safe(r.category)}</p>
+<p>Description: ${safe(r.description)}</p>
+<p>Location: ${safe(r.place)}</p>
+<p>Date: ${safe(r.date)}</p>
+<p>Contact: ${safe(r.contact)}</p>
+<p>Submitted by: ${safe(r.submittedBy)}</p>
+
+<div class="actions">
+<button onclick="approveReport(${r.id})">Approve</button>
+<button class="danger" onclick="rejectReport(${r.id})">Reject</button>
+</div>
+
+</article>
+`).join('')
+:'<div class="empty">No pending reports.</div>';
+
+// PROCESSED REPORTS
+document.getElementById('processedReports').innerHTML=
+processedReports.length
+?processedReports.map(r=>`
+<article class="item">
+<span class="status">${safe(r.status)}</span>
+<h3>${safe(r.type)}: ${safe(r.name)}</h3>
+<p>${safe(r.category)}</p>
+<p>${safe(r.place)}</p>
+</article>
+`).join('')
+:'<div class="empty">No processed reports yet.</div>';
+
+// PENDING CLAIMS
+document.getElementById('adminClaims').innerHTML=
+pendingClaims.length
+?pendingClaims.map(c=>`
+<article class="item">
+
+<span class="status">Pending Review</span>
+
+<h3>${safe(c.item)}</h3>
+<p>Claimant: ${safe(c.name)}</p>
+<p>Proof of ownership: ${safe(c.proof)}</p>
+<p>Contact: ${safe(c.contact)}</p>
+<p>Submitted by: ${safe(c.submittedBy)}</p>
+
+<div class="actions">
+<button onclick="approveClaim(${c.id})">Approve Claim</button>
+<button class="danger" onclick="rejectClaim(${c.id})">Reject Claim</button>
+</div>
+
+</article>
+`).join('')
+:'<div class="empty">No pending claims.</div>';
+
+// PROCESSED CLAIMS
+document.getElementById('processedClaims').innerHTML=
+processedClaims.length
+?processedClaims.map(c=>`
+<article class="item">
+<span class="status">${safe(c.status)}</span>
+<h3>${safe(c.item)}</h3>
+<p>Claimant: ${safe(c.name)}</p>
+</article>
+`).join('')
+:'<div class="empty">No processed claims yet.</div>';
+}
+
+// APPROVE REPORT
+function approveReport(id){
+
+if(!isAdmin)return;
+
+const d=loadDB();
+
+const r=d.reports.find(x=>x.id===id);
+
+if(!r||r.status!=='Pending admin verification')return;
+
+r.status='Posted';
+r.reviewedAt=new Date().toISOString();
+
+d.activities.unshift({
+id:Date.now(),
+message:'Admin approved report: '+r.name,
+type:'Approval',
+time:new Date().toISOString()
+});
+
+saveDB(d);
+renderAdmin();
+}
+
+// REJECT REPORT
+function rejectReport(id){
+
+if(!isAdmin)return;
+
+const d=loadDB();
+
+const r=d.reports.find(x=>x.id===id);
+
+if(!r||r.status!=='Pending admin verification')return;
+
+r.status='Rejected';
+r.reviewedAt=new Date().toISOString();
+
+d.activities.unshift({
+id:Date.now(),
+message:'Admin rejected report: '+r.name,
+type:'Rejection',
+time:new Date().toISOString()
+});
+
+saveDB(d);
+renderAdmin();
+}
+
+// APPROVE CLAIM
+function approveClaim(id){
+
+if(!isAdmin)return;
+
+const d=loadDB();
+
+const c=d.claims.find(x=>x.id===id);
+
+if(!c||c.status!=='Pending admin review')return;
+
+c.status='Approved';
+c.reviewedAt=new Date().toISOString();
+
+d.activities.unshift({
+id:Date.now(),
+message:'Admin approved claim for: '+c.item,
+type:'Claim Approval',
+time:new Date().toISOString()
+});
+
+saveDB(d);
+renderAdmin();
+}
+
+// REJECT CLAIM
+function rejectClaim(id){
+
+if(!isAdmin)return;
+
+const d=loadDB();
+
+const c=d.claims.find(x=>x.id===id);
+
+if(!c||c.status!=='Pending admin review')return;
+
+c.status='Rejected';
+c.reviewedAt=new Date().toISOString();
+
+d.activities.unshift({
+id:Date.now(),
+message:'Admin rejected claim for: '+c.item,
+type:'Claim Rejection',
+time:new Date().toISOString()
+});
+
+saveDB(d);
+renderAdmin();
+}
+
+// HTML SAFETY
+function safe(s){
+
+return String(s??'').replace(/[&<>"']/g,c=>({
+'&':'&amp;',
+'<':'&lt;',
+'>':'&gt;',
+'"':'&quot;',
+"'":'&#39;'
+}[c]));
+}
+
+</script>
+</body>
+</html>
